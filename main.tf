@@ -83,7 +83,7 @@ resource "aws_autoscaling_group" "asg" {
 }
 
 resource aws_launch_configuration "conf" {
-  name            = "banyan-accesstier-conf"
+  name_prefix     = "banyan-accesstier-conf-"
   image_id        = var.ami_id != "" ? var.ami_id : data.aws_ami.default_ami.id
   instance_type   = var.instance_type
   key_name        = var.ssh_key_name
@@ -93,6 +93,10 @@ resource aws_launch_configuration "conf" {
   ephemeral_block_device {
     device_name  = "/dev/sdc"
     virtual_name = "ephemeral0"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 
   user_data = join("", [
@@ -129,7 +133,7 @@ resource aws_alb "nlb" {
 }
 
 resource aws_lb_target_group "target443" {
-  name = "banyan-tg-443"
+  name     = "banyan-tg-443"
   vpc_id   = var.vpc_id
   port     = 443
   protocol = "TCP"
@@ -153,7 +157,7 @@ resource aws_lb_listener "listener443" {
 }
 
 resource aws_lb_target_group "target8443" {
-  name = "banyan-tg-8443"
+  name     = "banyan-tg-8443"
   vpc_id   = var.vpc_id
   port     = 8443
   protocol = "TCP"
