@@ -9,16 +9,16 @@ This module creates an AWS auto-scaling group (ASG) and a network load balancer 
 
 ```hcl
 module "aws_accesstier" {
-  source             = "./modules/banyan-accesstier-aws"
-  region             = "us-east-1"
-  vpc_id             = "vpc-0e73afd7c24062f0a"
-  public_subnets     = ["subnet-09ef9206ca406ffe7", "subnet-0bcb18d59e3ff3cc7"]
-  private_subnets    = ["subnet-00e393f22c3f09e16", "subnet-0dfce8195de704b65"]
-  cluster_name       = "my-banyan-shield"
-  site_name          = "my-banyan-site"
-  site_domain_names  = ["*.banyan.mycompany.com"]
-  ssh_key_name       = "my-ssh-key"
-  refresh_token      = "eyJhbGciOiJSUzI1NiIsIm..."
+  source                = "./modules/banyan-accesstier-aws"
+  region                = "us-east-1"
+  vpc_id                = "vpc-0e73afd7c24062f0a"
+  public_subnet_ids     = ["subnet-09ef9206ca406ffe7", "subnet-0bcb18d59e3ff3cc7"]
+  private_subnet_ids    = ["subnet-00e393f22c3f09e16", "subnet-0dfce8195de704b65"]
+  cluster_name          = "my-banyan-shield"
+  site_name             = "my-banyan-site"
+  site_domain_names     = ["*.banyan.mycompany.com"]
+  ssh_key_name          = "my-ssh-key"
+  refresh_token         = "eyJhbGciOiJSUzI1NiIsIm..."
 }
 ```
 
@@ -46,6 +46,7 @@ module "aws_accesstier" {
 | package\_name | Override to use a specific version of netagent (e.g. `banyan-netagent-1.5.0`) | `string` | `"banyan-netagent"` | no |
 | ssh\_key\_name | Name of an SSH key stored in AWS to allow management access | `string` | `""` | no |
 | vpc\_id | ID of the VPC in which to create the Access Tier | `string` | n/a | yes |
+| custom\_user\_data | A list of strings representing commands to add to the Launch Configuration user data to execute during instance initialization. Each string (or each command) must end with `\n`. Example: `["touch some/file\n", "wget ...\n"]` | `list(string)` | `[]` | no |
 
 ## Outputs
 
@@ -53,6 +54,7 @@ module "aws_accesstier" {
 |------|-------------|
 | nlb\_dns\_name | DNS name of the load balancer (example: `banyan-nlb-b335ff082d3b27ff.elb.us-east-1.amazonaws.com`) |
 | nlb\_zone\_id | Zone ID of the load balancer (example: `Z26RNL4JYFTOTI`) |
+| security\_group\_id | The ID of the security group attached to the access tier instances, which can be added as an inbound rule on other backend groups (example: `sg-1234abcd`) |
 
 ## Authors
 

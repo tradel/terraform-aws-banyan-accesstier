@@ -99,7 +99,7 @@ resource aws_launch_configuration "conf" {
     create_before_destroy = true
   }
 
-  user_data = join("", [
+  user_data = join("", concat([
     "#!/bin/bash -ex\n",
     "yum update -y\n",
     "yum install -y jq tar gzip curl sed\n",
@@ -117,7 +117,7 @@ resource aws_launch_configuration "conf" {
     "BANYAN_HOST_TAGS= ",
     "./install ${var.refresh_token} ${var.cluster_name} \n",
     "echo 'Port 2222' >> /etc/ssh/sshd_config && /bin/systemctl restart sshd.service\n",
-  ])
+  ], var.custom_user_data))
 }
 
 resource aws_alb "nlb" {
