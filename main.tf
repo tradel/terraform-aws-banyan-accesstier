@@ -65,7 +65,7 @@ resource "aws_autoscaling_group" "asg" {
   min_size                  = var.min_instances
   desired_capacity          = var.min_instances
   vpc_zone_identifier       = var.private_subnet_ids
-  health_check_grace_period = 300
+  health_check_grace_period = var.health_check_grace_period
   health_check_type         = "ELB"
   target_group_arns         = [aws_lb_target_group.target443.arn, aws_lb_target_group.target8443.arn]
 

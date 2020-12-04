@@ -115,3 +115,9 @@ variable "iam_instance_profile" {
   description = "The name attribute of the IAM instance profile to associate with launched instances."
   default     = null
 }
+
+variable "health_check_grace_period" {
+  type        = number
+  description = "Health check grace period for autoscaling group"
+  default     = 300
+}
